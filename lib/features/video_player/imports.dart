@@ -1,0 +1,29 @@
+import 'dart:async';
+
+import 'dart:io';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:multi_platform_video_player/core/core.dart';
+import 'package:multi_platform_video_player/features/video_player/player/app_video_player.dart';
+import 'package:multi_platform_video_player/features/video_player/player/app_video_player_factory.dart';
+
+part 'cubit/video_player_cubit.dart';
+part 'cubit/video_player_state.dart';
+part 'screens/video_player_screen.dart';
+part 'widgets/phone_controls.dart';
+part 'widgets/play_pause_button.dart';
+part 'widgets/phone_seek_bar.dart';
+part 'widgets/tv_seek_bar.dart';
+part 'widgets/tv_seek_bar_listenable.dart';
+part 'widgets/tv_controls.dart';
+part 'widgets/tv_focus_button.dart';
+part 'widgets/status_overlay.dart';
+part 'widgets/video_view.dart';
+part 'widgets/web_video_surface.dart';
+part 'widgets/web_tv_video_layout.dart';
+part 'widgets/double_tap_feedback.dart';
+part 'widgets/speed_selector_bottom_sheet.dart';

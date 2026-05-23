@@ -1,0 +1,11 @@
+{
+  "id": "com.multiplatform.videoplayer",
+  "version": "1.0.0",
+  "vendor": "MohammedHessein",
+  "type": "web",
+  "main": "index.html",
+  "title": "Multi Platform Video Player",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "resolution": "1920x1080"
+}

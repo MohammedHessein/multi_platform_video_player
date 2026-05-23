@@ -1,0 +1,26 @@
+{
+  "app_title": {
+    "en": "Multi-Platform Video Player",
+    "ar": "مشغل الفيديو"
+  },
+  "play": {
+    "en": "Play",
+    "ar": "تشغيل"
+  },
+  "pause": {
+    "en": "Pause",
+    "ar": "إيقاف"
+  },
+  "rewind": {
+    "en": "-10s",
+    "ar": "-10 ثواني"
+  },
+  "forward": {
+    "en": "+10s",
+    "ar": "+10 ثواني"
+  },
+  "error_loading_video": {
+    "en": "Failed to load video",
+    "ar": "فشل تحميل الفيديو"
+  }
+}

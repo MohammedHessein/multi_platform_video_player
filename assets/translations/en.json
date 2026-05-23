@@ -1,0 +1,18 @@
+{
+  "appTitle": "Multi-Platform Video Player",
+  "play": "Play",
+  "pause": "Pause",
+  "rewind": "Back 5s",
+  "forward": "Forward 5s",
+  "errorLoadingVideo": "Error loading video",
+  "loadingVideo": "Loading Video...",
+  "seekDuration": "5s",
+  "playbackSpeed": "Playback Speed",
+  "videoTitle": "Big Buck Bunny",
+  "exitAppTitle": "Exit App",
+  "exitAppMessage": "Do you want to exit the application?",
+  "yes": "Yes",
+  "no": "No",
+  "exitHostedWebOsHint": "Exit is not available in hosted emulator mode. Stop the app with Ctrl+C in the terminal, or install the packaged .ipk on a TV.",
+  "speed": "{}x"
+}

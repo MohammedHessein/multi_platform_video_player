@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <!-- "/" for Chrome/Edge dev & flutter run. TV builds: patch_tv_js.js sets "./" in build/web. -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Multi Platform Video Player">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="multi_platform_video_player">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Multi Platform Video Player</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #1a1a2e;
+      overflow: hidden;
+    }
+    #tv-loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #e0e0e0;
+      z-index: 9999;
+      padding: 24px;
+      text-align: center;
+    }
+    #tv-loading .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255,255,255,0.15);
+      border-top-color: #6c63ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #tv-loading .title { font-size: 22px; font-weight: 600; }
+    #tv-loading .subtitle {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 8px;
+      max-width: 90%;
+      line-height: 1.4;
+    }
+    #tv-error {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #1a1a2e;
+      color: #ff6b6b;
+      font-family: monospace;
+      font-size: 13px;
+      padding: 40px;
+      overflow: auto;
+      z-index: 10000;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+<div id="tv-loading">
+  <div class="spinner"></div>
+  <div class="title">Multi Platform Video Player</div>
+  <div class="subtitle" id="tv-status">Loading Flutter engine…</div>
+</div>
+<div id="tv-error"></div>
+
+<script>
+  function tvSetStatus(msg) {
+    var el = document.getElementById('tv-status');
+    if (el) el.textContent = msg;
+    console.log('[TV]', msg);
+  }
+
+  function tvShowError(msg) {
+    var el = document.getElementById('tv-error');
+    if (el) {
+      el.style.display = 'block';
+      el.textContent += msg + '\n';
+    }
+    tvSetStatus('Failed — see error overlay');
+    console.error('[TV]', msg);
+  }
+
+  window.addEventListener('error', function(e) {
+    tvShowError('[ERROR] ' + (e.message || e) + (e.filename ? '\n  at ' + e.filename + ':' + e.lineno : ''));
+  });
+  window.addEventListener('unhandledrejection', function(e) {
+    tvShowError('[PROMISE] ' + (e.reason || e));
+  });
+
+  window.addEventListener('flutter-first-frame', function() {
+    var loader = document.getElementById('tv-loading');
+    if (loader) loader.remove();
+  });
+
+  // Master Lock to prevent "styles already declared" double-loading errors.
+  window._tvDidBoot = false;
+
+  function bootTvFlutter() {
+    if (window._tvDidBoot) return;
+    if (typeof WebAssembly === 'undefined') {
+      tvShowError('WebAssembly is not supported on this TV browser.');
+      return;
+    }
+    if (!window._flutter || !window._flutter.loader) {
+      tvShowError('flutter_bootstrap.js did not initialize _flutter.loader.');
+      return;
+    }
+
+    window._tvDidBoot = true;
+    tvSetStatus('Starting CanvasKit + main.dart.js…');
+
+    var loadPromise = window._flutter.loader.load({
+      config: {
+        canvasKitBaseUrl: 'canvaskit/',
+        canvasKitVariant: 'full',
+      },
+    });
+
+    if (loadPromise && typeof loadPromise.then === 'function') {
+      loadPromise.then(function() {
+        tvSetStatus('Engine started, waiting for first frame…');
+      }).catch(function(err) {
+        tvShowError('Flutter loader.load failed:\n' + (err && (err.stack || err.message || err)));
+      });
+    }
+  }
+
+  // Intercept any automatic load calls from flutter_bootstrap.js (dev mode)
+  (function() {
+    var checkInt = setInterval(function() {
+      if (window._flutter && window._flutter.loader) {
+        var originalLoad = window._flutter.loader.load;
+        window._flutter.loader.load = function() {
+          if (window._tvDidBoot) return Promise.resolve();
+          window._tvDidBoot = true;
+          return originalLoad.apply(this, arguments);
+        };
+        clearInterval(checkInt);
+      }
+    }, 10);
+    setTimeout(function() { clearInterval(checkInt); }, 2000);
+  })();
+</script>
+
+<!-- Synchronous load: async often never fires boot on webOS file:// -->
+<script src="flutter_bootstrap.js" onerror="tvShowError('Failed to load flutter_bootstrap.js')"></script>
+<script>
+  try {
+    // Only manual boot if we are in a patched TV build (base href="./").
+    // In "flutter run" (base href="/"), the bootstrap auto-starts and
+    // our interceptor above will catch it and prevent double-loading.
+    var baseEl = document.querySelector('base');
+    var isPatchedTvBuild = baseEl && baseEl.getAttribute('href') === './';
+
+    if (isPatchedTvBuild || !window._tvDidBoot) {
+      bootTvFlutter();
+    }
+  } catch (e) {
+    tvShowError('boot logic: ' + (e.stack || e.message || e));
+  }
+
+  setTimeout(function() {
+    var loader = document.getElementById('tv-loading');
+    if (!loader) return;
+    if (!window._tvDidBoot) {
+       tvShowError('[BOOT] Engine did not start after 90s.');
+    } else {
+       tvSetStatus('Still loading (90s) — open ares-inspect and check Console');
+    }
+  }, 90000);
+</script>
+</body>
+</html>

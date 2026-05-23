@@ -1,0 +1,18 @@
+{
+  "appTitle": "مشغل الفيديو",
+  "play": "تشغيل",
+  "pause": "إيقاف",
+  "rewind": "رجوع 5 ثواني",
+  "forward": "تقديم 5 ثواني",
+  "errorLoadingVideo": "خطأ في تحميل الفيديو",
+  "loadingVideo": "جاري تحميل الفيديو...",
+  "seekDuration": "٥ ثواني",
+  "playbackSpeed": "سرعة التشغيل",
+  "videoTitle": "بيج باك باني",
+  "exitAppTitle": "الخروج من التطبيق",
+  "exitAppMessage": "هل تريد حقاً الخروج من التطبيق؟",
+  "yes": "نعم",
+  "no": "لا",
+  "exitHostedWebOsHint": "الخروج غير متاح في وضع المحاكي المستضاف. أوقف التطبيق بـ Ctrl+C في الطرفية، أو ثبّت ملف .ipk على التلفزيون.",
+  "speed": "{}x"
+}

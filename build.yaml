@@ -1,0 +1,7 @@
+builders:
+  translation_splitter:
+    import: "package:multi_platform_video_player/core/builders/translation_splitter.dart"
+    builder_factories: ["translationSplitter"]
+    build_extensions: {"assets/translations/lang.json": ["assets/translations/en.json", "assets/translations/ar.json"]}
+    auto_apply: root_package
+    build_to: source

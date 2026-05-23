@@ -1,0 +1,30 @@
+{
+  "info": "This is a generated file; do not edit or check into version control.",
+  "plugins": [
+    {
+      "name": "video_player_tizen",
+      "version": "2.5.8"
+    },
+    {
+      "name": "shared_preferences_tizen",
+      "version": "2.3.1"
+    }
+  ],
+  "dart": {
+    "version": "3.11.5"
+  },
+  "flutter": {
+    "version": "3.41.9",
+    "revision": "00b0c91f06"
+  },
+  "flutter-tizen": {
+    "revision": "3f3b56cea3"
+  },
+  "engine": {
+    "revision": "42d3d75a56"
+  },
+  "embedder": {
+    "revision": "3afdd647e4"
+  },
+  "date_created": "2026-05-23 02:17:02.241513"
+}
