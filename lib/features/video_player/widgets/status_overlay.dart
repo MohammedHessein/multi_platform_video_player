@@ -19,8 +19,8 @@ class StatusOverlay extends StatelessWidget {
       child: Center(
         child: Icon(
           showsPlayIcon!
-              ? Icons.play_arrow_rounded
-              : Icons.pause_rounded,
+              ? Icons.play_arrow
+              : Icons.pause,
           size: 100.r,
           color: AppColors.white.withOpacity(0.9),
           shadows: const [

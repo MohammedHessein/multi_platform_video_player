@@ -21,35 +21,29 @@ class WebTvVideoLayout extends StatelessWidget {
         child: Stack(
           children: [
             WebVideoSurface(player: cubit.player),
-            RepaintBoundary(
-              child: BlocSelector<VideoPlayerCubit, VideoPlayerState, bool?>(
-                selector: (state) => state.overlayShowsPlay,
-                builder: (context, showsPlayIcon) {
-                  return StatusOverlay(showsPlayIcon: showsPlayIcon);
-                },
-              ),
-            ),
             BlocSelector<VideoPlayerCubit, VideoPlayerState, _TvControlsSelectorData>(
               selector: (state) => _TvControlsSelectorData(
                 showControls: state.showControls,
                 isPlaying: state.isPlaying,
                 playbackSpeed: state.playbackSpeed,
+                showStatusOverlay: state.showStatusOverlay,
+                overlayShowsPlay: state.overlayShowsPlay,
               ),
               builder: (context, data) {
-                return RepaintBoundary(
-                  child: AnimatedOpacity(
-                    opacity: data.showControls ? 1.0 : 0.0,
-                    duration: AppConstants.webTvControlsFadeDuration,
-                    child: IgnorePointer(
-                      ignoring: !data.showControls,
-                      child: TvControls(
-                        isPlaying: data.isPlaying,
-                        playbackSpeed: data.playbackSpeed,
-                        onTogglePlayPause: cubit.togglePlayPause,
-                        onSeekForward: cubit.seekForward,
-                        onSeekBackward: cubit.seekBackward,
-                        onSpeedChanged: cubit.setPlaybackSpeed,
-                      ),
+                return AnimatedOpacity(
+                  opacity: data.showControls ? 1.0 : 0.0,
+                  duration: AppConstants.webTvControlsFadeDuration,
+                  child: IgnorePointer(
+                    ignoring: !data.showControls,
+                    child: TvControls(
+                      isPlaying: data.isPlaying,
+                      playbackSpeed: data.playbackSpeed,
+                      showStatusOverlay: data.showStatusOverlay,
+                      overlayShowsPlay: data.overlayShowsPlay,
+                      onTogglePlayPause: cubit.togglePlayPause,
+                      onSeekForward: cubit.seekForward,
+                      onSeekBackward: cubit.seekBackward,
+                      onSpeedChanged: cubit.setPlaybackSpeed,
                     ),
                   ),
                 );
@@ -67,11 +61,15 @@ class _TvControlsSelectorData {
   final bool showControls;
   final bool isPlaying;
   final double playbackSpeed;
+  final bool showStatusOverlay;
+  final bool? overlayShowsPlay;
 
   const _TvControlsSelectorData({
     required this.showControls,
     required this.isPlaying,
     required this.playbackSpeed,
+    required this.showStatusOverlay,
+    required this.overlayShowsPlay,
   });
 
   @override
@@ -79,8 +77,16 @@ class _TvControlsSelectorData {
       other is _TvControlsSelectorData &&
       showControls == other.showControls &&
       isPlaying == other.isPlaying &&
-      playbackSpeed == other.playbackSpeed;
+      playbackSpeed == other.playbackSpeed &&
+      showStatusOverlay == other.showStatusOverlay &&
+      overlayShowsPlay == other.overlayShowsPlay;
 
   @override
-  int get hashCode => Object.hash(showControls, isPlaying, playbackSpeed);
+  int get hashCode => Object.hash(
+    showControls,
+    isPlaying,
+    playbackSpeed,
+    showStatusOverlay,
+    overlayShowsPlay,
+  );
 }

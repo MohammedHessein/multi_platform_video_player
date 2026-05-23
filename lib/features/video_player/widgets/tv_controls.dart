@@ -3,6 +3,8 @@ part of '../imports.dart';
 class TvControls extends StatelessWidget {
   final bool isPlaying;
   final double playbackSpeed;
+  final bool showStatusOverlay;
+  final bool? overlayShowsPlay;
   final VoidCallback onTogglePlayPause;
   final VoidCallback onSeekForward;
   final VoidCallback onSeekBackward;
@@ -12,6 +14,8 @@ class TvControls extends StatelessWidget {
     super.key,
     required this.isPlaying,
     required this.playbackSpeed,
+    this.showStatusOverlay = false,
+    this.overlayShowsPlay,
     required this.onTogglePlayPause,
     required this.onSeekForward,
     required this.onSeekBackward,
@@ -43,6 +47,24 @@ class TvControls extends StatelessWidget {
             ),
           ),
         ),
+        if (showStatusOverlay && overlayShowsPlay != null)
+          IgnorePointer(
+            child: Center(
+              child: Icon(
+                overlayShowsPlay!
+                    ? Icons.play_arrow
+                    : Icons.pause,
+                size: 100.r,
+                color: AppColors.white.withOpacity(0.9),
+                shadows: const [
+                  Shadow(
+                    color: Color(0x99000000),
+                    blurRadius: 24,
+                  ),
+                ],
+              ),
+            ),
+          ),
         // Top Bar
         Positioned(
           top: 20.h,

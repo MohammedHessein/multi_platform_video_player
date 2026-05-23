@@ -80,6 +80,8 @@ class _TvFocusButtonState extends State<TvFocusButton> {
                 Text(
                   widget.label!,
                   key: ValueKey('lbl_${widget.label}'),
+                  softWrap: false,
+                  overflow: TextOverflow.visible,
                   style: TextStyle(
                     color: _isFocused
                         ? AppColors.primary

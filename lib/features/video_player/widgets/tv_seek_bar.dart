@@ -20,33 +20,33 @@ class TvSeekBar extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        RepaintBoundary(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(2.r),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 4.h,
-              backgroundColor: AppColors.onSurfaceVariant.withOpacity(0.3),
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
-            ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(2.r),
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 4.h,
+            backgroundColor: AppColors.onSurfaceVariant.withOpacity(0.3),
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
           ),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: RepaintBoundary(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  position.format(),
-                  style: TextStyle(color: AppColors.white, fontSize: 12.sp),
-                ),
-                Text(
-                  duration.format(),
-                  style: TextStyle(color: AppColors.white, fontSize: 12.sp),
-                ),
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                position.format(),
+                softWrap: false,
+                overflow: TextOverflow.visible,
+                style: TextStyle(color: AppColors.white, fontSize: 12.sp),
+              ),
+              Text(
+                duration.format(),
+                softWrap: false,
+                overflow: TextOverflow.visible,
+                style: TextStyle(color: AppColors.white, fontSize: 12.sp),
+              ),
+            ],
           ),
         ),
       ],
